@@ -54,7 +54,8 @@ proc ossec-syscheckd 1 0
 file /var/ossec/logs/alerts/alerts.log
 
 # VSCAN processes
-proc python3 10 2  # For Python processes (used by notus-scanner and ospd-openvas)
+proc python3 1 0  # For Python processes (used by notus-scanner and ospd-openvas)
+proc ospd-openvas 1 0
 proc gvmd 1 0      # Greenbone Vulnerability Manager
 proc gsad 1 0      # Greenbone Security Assistant
 proc postgres 1 0 # PostgreSQL database for GVM
