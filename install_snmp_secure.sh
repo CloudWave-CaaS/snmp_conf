@@ -58,7 +58,7 @@ proc python3 1 0  # For Python processes (used by notus-scanner and ospd-openvas
 proc ospd-openvas 1 0
 proc gvmd 1 0      # Greenbone Vulnerability Manager
 proc gsad 1 0      # Greenbone Security Assistant
-proc postgres 1 0 # PostgreSQL database for GVM
+proc postgres      # PostgreSQL database for GVM
 proc observiq-otel-collector 1 0 # BindPlaneAgent *also used for HPs*
 
 ## Confirm with:  snmpwalk -v1 -c public localhost 1.3.6.1.4.1.2021.2.1.2
