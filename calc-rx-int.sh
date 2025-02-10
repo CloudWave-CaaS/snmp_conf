@@ -6,18 +6,19 @@ INTERFACE="ens33"
 SLEEP=1
 
 # Check if interface exists
-if ! grep -q "$INTERFACE" /proc/net/dev; then
+if ! grep -qE "^\s*$INTERFACE:" /proc/net/dev; then
+    echo "Error: Interface $INTERFACE not found in /proc/net/dev"
     exit 1
 fi
 
 # Get initial RX bytes
-RX1=$(awk -v I="$INTERFACE" '$1 ~ I {print $2}' /proc/net/dev)
+RX1=$(awk -v I="$INTERFACE" '$1 ~ I":" {gsub(/:/, "", $1); print $2}' /proc/net/dev)
 
 # Wait for the interval
 sleep $SLEEP
 
 # Get RX bytes after the interval
-RX2=$(awk -v I="$INTERFACE" '$1 ~ I {print $2}' /proc/net/dev)
+RX2=$(awk -v I="$INTERFACE" '$1 ~ I":" {gsub(/:/, "", $1); print $2}' /proc/net/dev)
 
 # Calculate RX throughput (Bytes/sec)
 RX_BPS=$(( RX2 >= RX1 ? (RX2 - RX1) / SLEEP : 0 ))
