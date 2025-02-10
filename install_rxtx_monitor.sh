@@ -52,6 +52,9 @@ update_snmp_config() {
     # Backup the existing SNMP config
     cp "$SNMP_CONFIG" "$SNMP_CONFIG.bak"
 
+    # Ensure there are at least two newlines before appending pass directives
+    echo -e "\n\n" >> "$SNMP_CONFIG"
+
     # Add the pass directives if they don’t already exist
     grep -qxF "pass .1.3.6.1.4.1.999999.51.1 $RX_SCRIPT_PATH" "$SNMP_CONFIG" || echo "pass .1.3.6.1.4.1.999999.51.1 $RX_SCRIPT_PATH" >> "$SNMP_CONFIG"
     grep -qxF "pass .1.3.6.1.4.1.999999.51.2 $TX_SCRIPT_PATH" "$SNMP_CONFIG" || echo "pass .1.3.6.1.4.1.999999.51.2 $TX_SCRIPT_PATH" >> "$SNMP_CONFIG"
