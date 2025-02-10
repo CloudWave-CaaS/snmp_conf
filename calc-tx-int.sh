@@ -6,18 +6,19 @@ INTERFACE="ens33"
 SLEEP=1
 
 # Check if interface exists
-if ! grep -q "$INTERFACE" /proc/net/dev; then
+if ! grep -qE "^\s*$INTERFACE:" /proc/net/dev; then
+    echo "Error: Interface $INTERFACE not found in /proc/net/dev"
     exit 1
 fi
 
 # Get initial TX bytes
-TX1=$(awk -v I="$INTERFACE" '$1 ~ I {print $10}' /proc/net/dev)
+TX1=$(awk -v I="$INTERFACE" '$1 ~ I":" {gsub(/:/, "", $1); print $10}' /proc/net/dev)
 
 # Wait for the interval
 sleep $SLEEP
 
 # Get TX bytes after the interval
-TX2=$(awk -v I="$INTERFACE" '$1 ~ I {print $10}' /proc/net/dev)
+TX2=$(awk -v I="$INTERFACE" '$1 ~ I":" {gsub(/:/, "", $1); print $10}' /proc/net/dev)
 
 # Calculate TX throughput (Bytes/sec)
 TX_BPS=$(( TX2 >= TX1 ? (TX2 - TX1) / SLEEP : 0 ))
