@@ -23,6 +23,10 @@ sudo cp "$SNMP_CONF" "$BACKUP_CONF"
 echo "Configuring SNMP to listen on UDP:161..."
 sudo sed -i 's/^agentaddress.*/agentAddress udp:161/' "$SNMP_CONF"
 
+# Remove default SNMP community strings
+echo "Removing default SNMP community strings..."
+sudo sed -i '/^rocommunity[6]*[ \t]\+public/d' "$SNMP_CONF"
+
 # Set community string with localhost restriction
 echo "Updating SNMP community string..."
 echo "rocommunity $SNMP_COMMUNITY" | sudo tee -a "$SNMP_CONF" > /dev/null
